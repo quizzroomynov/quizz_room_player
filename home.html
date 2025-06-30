@@ -58,8 +58,20 @@
   eventSourceFirstPlayer.onmessage = (event) => {
     data = event.data
     const dataSplit = data.split('|||');
-    firstPlayerName.textContent = `${dataSplit[0]};${dataSplit[1]}--${TEST}`;
-    firstPlayerDiv.style.visibility = "visible";
+
+    if (dataSplit[0] != '') {
+      firstPlayerName.textContent = `${dataSplit[0]}`;
+      firstPlayerDiv.style.visibility = "visible";
+    }
+    else{
+      firstPlayerName.textContent = `Personne ne`;
+      firstPlayerDiv.style.visibility = "hidden";
+    }
+
+
+    // firstPlayerName.textContent = `${dataSplit[0]};${dataSplit[1]}--${TEST}`;
+    // firstPlayerDiv.style.visibility = "visible";
+
       // if (dataSplit[0] != '') {
       //   if (dataSplit[1] == null){
       //     firstPlayerName.textContent = `${dataSplit[0]}`;
