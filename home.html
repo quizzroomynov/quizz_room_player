@@ -58,41 +58,38 @@
   eventSourceFirstPlayer.onmessage = (event) => {
     data = event.data
     const dataSplit = data.split('|||');
-    // if (dataSplit[1] != null){
-    //   TEST = dataSplit[1]
-    // }
-    // firstPlayerName.textContent = `${dataSplit[0]};${dataSplit[1]}--${TEST}`;
-    // firstPlayerDiv.style.visibility = "visible";
-      if (dataSplit[0] != '') {
-        if (dataSplit[1] == null){
-          firstPlayerName.textContent = `${dataSplit[0]}`;
-          firstPlayerName.style.color = "red"
-          firstPlayerDiv.style.visibility = "visible";
+    firstPlayerName.textContent = `${dataSplit[0]};${dataSplit[1]}--${TEST}`;
+    firstPlayerDiv.style.visibility = "visible";
+      // if (dataSplit[0] != '') {
+      //   if (dataSplit[1] == null){
+      //     firstPlayerName.textContent = `${dataSplit[0]}`;
+      //     firstPlayerName.style.color = "red"
+      //     firstPlayerDiv.style.visibility = "visible";
 
-          clearTimeout(highlightTimeout);
-          highlightTimeout = setTimeout(() => {
-            firstPlayerName.style.color = "";
-          }, 5000);
-        }
-        else if(dataSplit[1] == dataSplit[0]){
-          firstPlayerName.textContent = `${dataSplit[0]}`;
-          firstPlayerName.style.color = "green"
-          firstPlayerDiv.style.visibility = "visible";
+      //     clearTimeout(highlightTimeout);
+      //     highlightTimeout = setTimeout(() => {
+      //       firstPlayerName.style.color = "";
+      //     }, 5000);
+      //   }
+      //   else if(dataSplit[1] == dataSplit[0]){
+      //     firstPlayerName.textContent = `${dataSplit[0]}`;
+      //     firstPlayerName.style.color = "green"
+      //     firstPlayerDiv.style.visibility = "visible";
 
-          clearTimeout(highlightTimeout);
-          highlightTimeout = setTimeout(() => {
-            firstPlayerName.style.color = "";
-          }, 5000);
-        }
-        else{
-          firstPlayerName.textContent = `${dataSplit[0]}`;
-          firstPlayerDiv.style.visibility = "visible";
-        }
-      }
-      else{
-        firstPlayerName.textContent = `Personne ne`;
-        firstPlayerDiv.style.visibility = "hidden";
-      }
+      //     clearTimeout(highlightTimeout);
+      //     highlightTimeout = setTimeout(() => {
+      //       firstPlayerName.style.color = "";
+      //     }, 5000);
+      //   }
+      //   else{
+      //     firstPlayerName.textContent = `${dataSplit[0]}`;
+      //     firstPlayerDiv.style.visibility = "visible";
+      //   }
+      // }
+      // else{
+      //   firstPlayerName.textContent = `Personne ne`;
+      //   firstPlayerDiv.style.visibility = "hidden";
+      // }
   };
 
   // Question + Timer
