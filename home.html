@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Player</title>
+</head>
+<body>
+  <!-- <h1>Chrono</h1> -->
+  <!-- <div id="chrono">Waiting...</div> -->
+
+  <div class="titleText">Liste des joueurs :</div>
+  <div id="listOfPlayersDiv">En cours de création</div>
+  
+  <div id="questionDiv">
+    <div class="titleText">Question :</div>
+    <span id="questionLabel"></span>
+    <br>
+    <div id="timerDiv">
+      <span id="timerText">Timer : </span><span id="timerCount"></span>
+    </div>
+  </div>
+
+  <div id="firstPlayerDiv"><span id="firstPlayerName"></span><span id="firstPlayerText"> réponds</span></div>
+
+</body>
+
+<script>
+  const eventSourceListOfPlayers = new EventSource('http://localhost:3000/buzzer/api/sse/listOfPlayers');
+  const eventSourceFirstPlayer = new EventSource('http://localhost:3000/buzzer/api/sse/firstPlayer');
+  const eventSourceQuestion = new EventSource('http://localhost:3000/buzzer/api/sse/question');
+
+  // ListOfPlayers
+  eventSourceListOfPlayers.onmessage = (event) => {
+    data = event.data
+
+    const container = document.getElementById("listOfPlayersDiv");
+    const table = document.createElement("table");
+      
+    listOfPlayersDiv.textContent = ''
+    const userNameList = data.split(';');
+    for (const userName of userNameList){
+      const row = document.createElement("tr");
+      const td = document.createElement("td");
+
+      td.textContent = userName;
+
+      row.appendChild(td);
+      table.appendChild(row);
+      // listOfPlayersDiv.textContent += `<div>${userName}</div>`;
+    }
+
+    container.appendChild(table);
+
+    listOfPlayersDiv.style.visibility = "visible";
+  };
+
+  // FirstPlayer
+  let highlightTimeout
+  eventSourceFirstPlayer.onmessage = (event) => {
+    data = event.data
+    const dataSplit = data.split('|||');
+    // if (dataSplit[1] != null){
+    //   TEST = dataSplit[1]
+    // }
+    // firstPlayerName.textContent = `${dataSplit[0]};${dataSplit[1]}--${TEST}`;
+    // firstPlayerDiv.style.visibility = "visible";
+      if (dataSplit[0] != '') {
+        if (dataSplit[1] == null){
+          firstPlayerName.textContent = `${dataSplit[0]}`;
+          firstPlayerName.style.color = "red"
+          firstPlayerDiv.style.visibility = "visible";
+
+          clearTimeout(highlightTimeout);
+          highlightTimeout = setTimeout(() => {
+            firstPlayerName.style.color = "";
+          }, 5000);
+        }
+        else if(dataSplit[1] == dataSplit[0]){
+          firstPlayerName.textContent = `${dataSplit[0]}`;
+          firstPlayerName.style.color = "green"
+          firstPlayerDiv.style.visibility = "visible";
+
+          clearTimeout(highlightTimeout);
+          highlightTimeout = setTimeout(() => {
+            firstPlayerName.style.color = "";
+          }, 5000);
+        }
+        else{
+          firstPlayerName.textContent = `${dataSplit[0]}`;
+          firstPlayerDiv.style.visibility = "visible";
+        }
+      }
+      else{
+        firstPlayerName.textContent = `Personne ne`;
+        firstPlayerDiv.style.visibility = "hidden";
+      }
+  };
+
+  // Question + Timer
+  eventSourceQuestion.onmessage = (event) => {
+    data = event.data
+    if (data != '' || data != ';') {
+      const questionData = data.split(';');
+      questionLabel.textContent = questionData[0];
+      if (questionData[1] == ''){
+        timerDiv.style.visibility = "hidden";
+      }
+      else{
+        timerCount.textContent = `${questionData[1]}s`;
+        timerDiv.style.visibility = "visible";
+      }
+      timerCount.textContent = `${questionData[1]}s`;
+    }
+  };
+
+  
+
+  // eventSource.addEventListener('end', () => {
+  //   chronoDiv.textContent += ' ✅ Finished!';
+  //   eventSource.close();
+  // });
+
+  // eventSource.onerror = () => {
+  //   chronoDiv.textContent = 'Error';
+  //   // eventSource.close();
+  // };
+</script>
+
+<style>
+  #listOfPlayersDiv {visibility: hidden;}
+
+  #firstPlayerDiv {font-size: 40px; visibility: hidden}
+  #firstPlayerName {font-weight: bold;}
+
+  #timerDiv {visibility: hidden;}
+  #timerText {font-weight: bold;}
+
+  .titleText {font-weight: bold; font-size: 32px;}
+</style>
+</html>
